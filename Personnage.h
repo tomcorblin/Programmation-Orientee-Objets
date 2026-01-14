@@ -39,6 +39,9 @@ public:
     void ajouterObjet(Objet* o);
     void afficherInventaire() const;
     void utiliserObjet(int index);
+    void augmenterForce(int f);
+    void ajouterArgent(int a);
+
 };
 
 #endif

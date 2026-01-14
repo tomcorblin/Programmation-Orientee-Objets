@@ -1,4 +1,6 @@
 #include "Entite.h"
+#include <iostream>
+using namespace std;
 
 // Constructeur
 Entite::Entite(std::string n, int sa, int px, int py, int pv, int f, int r)
@@ -24,6 +26,13 @@ void Entite::MAJPV(int points)
     if (points_vie < 0)
         points_vie = 0;
 }
+void Entite::MAJArgent(int montant)
+{
+    somme_argent += montant;
+    if (somme_argent < 0) somme_argent = 0; // on évite l'argent négatif
+    cout << nom << " a maintenant " << somme_argent << " pièces.\n";
+}
+
 
 // Accesseurs
 std::string Entite::GetNom() const { return nom; }

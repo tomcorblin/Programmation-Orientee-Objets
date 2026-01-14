@@ -26,6 +26,7 @@ public:
     // Méthodes
     bool estVivant() const;
     void MAJPV(int points);
+    void MAJArgent(int montant);
 
     // Accesseurs
     std::string GetNom() const;

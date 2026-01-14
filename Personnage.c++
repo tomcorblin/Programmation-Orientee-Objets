@@ -64,11 +64,13 @@ void Personnage::afficher() const
     case ClassePersonnage::MrBoiteACaca: icone = "💩"; break;
     }
 
+    std::cout << "________________________________________"<<endl;
     std::cout << "Personnage : " << nom << " " << icone << std::endl;
     std::cout << "PV : " << points_vie << std::endl;
     std::cout << "Force : " << force << std::endl;
     std::cout << "Rapidite : " << rapidite << std::endl;
     std::cout << "Chance : " << chance << std::endl;
+    std::cout << "________________________________________"<<endl;
 
     if (!inventaire.empty())
         {
@@ -86,11 +88,12 @@ void Personnage::afficherInventaire() const
         return;
     }
 
-    std::cout << "Inventaire :\n";
+    std::cout << endl<< "Inventaire :\n";
     for (size_t i = 0; i < inventaire.size(); ++i)
     {
         std::cout << i << " - " << inventaire[i]->GetNom() << "\n";
     }
+    std::cout << endl;
 }
 
 void Personnage::utiliserObjet(int index)
@@ -106,4 +109,15 @@ void Personnage::utiliserObjet(int index)
     // Optionnel : supprimer l’objet après usage
     inventaire.erase(inventaire.begin() + index);
 }
+
+void Personnage::augmenterForce(int f)
+{
+	force += f;
+}
+void Personnage::ajouterArgent(int a)
+{
+	somme_argent += a;
+}
+
+
 
