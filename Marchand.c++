@@ -8,11 +8,11 @@ Marchand::Marchand(const std::string& n, int x, int y)
     : Entite(n,0, x, y,0,0,0)
 {
     // Stock fixe du marchand
-    stock.push_back(Objet("Robot Chirurgien", TypeObjet::Robot_Chirurgien, 20));
-    stock.push_back(Objet("Robot Chirurgien", TypeObjet::Robot_Chirurgien, 20));
-    stock.push_back(Objet("Seringue de steroids", TypeObjet::Seringue_de_steroid, 15));
-    stock.push_back(Objet("Les chaussures qui courent vite", TypeObjet::Chaussures_qui_courent_vite, 40));
-    stock.push_back(Objet("PortalGun", TypeObjet::PortalGun, 0));
+    stock.push_back(Objet("Robot Chirurgien", TypeObjet::Robot_Chirurgien, 20,10));
+    stock.push_back(Objet("Robot Chirurgien", TypeObjet::Robot_Chirurgien, 20,10));
+    stock.push_back(Objet("Seringue de steroids", TypeObjet::Seringue_de_steroid, 15,20));
+    stock.push_back(Objet("Les chaussures qui courent vite", TypeObjet::Chaussures_qui_courent_vite, 40,40));
+    stock.push_back(Objet("PortalGun", TypeObjet::PortalGun, 0,0));
 }
 
 void Marchand::parler()
@@ -37,7 +37,7 @@ void Marchand::vendreObjet(int index, Personnage& joueur)
     }
 
     Objet& o = stock[index];
-    int prix = 30; // fixe pour simplifier
+    int prix = o.GetPrix(); // fixe pour simplifier
     if (joueur.GetArgent() < prix)
     {
         std::cout << "Pas assez d'argent.\n";
@@ -45,7 +45,7 @@ void Marchand::vendreObjet(int index, Personnage& joueur)
     }
 
     joueur.MAJPV(0); // optionnel si tu veux afficher stats après achat
-    joueur.ajouterObjet(new Objet(o.GetNom(), o.GetType(), o.GetValeur()));
+    joueur.ajouterObjet(new Objet(o.GetNom(), o.GetType(), o.GetValeur(),o.GetPrix()));
     joueur.MAJArgent(-prix);
     std::cout << "Achat réussi : " << o.GetNom() << "\n";
 

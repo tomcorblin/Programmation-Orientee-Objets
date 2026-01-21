@@ -13,6 +13,7 @@ Plateau::Plateau()
         }
 
     std::srand(std::time(nullptr)); // initialisation du générateur aléatoire
+    r417M=false;
 }
 
 // Affichage ASCII du plateau
@@ -148,6 +149,7 @@ void Plateau::lancerCombat(Personnage* joueur, Ennemi* ennemi)
                 std::cout << ennemi->GetNom() << " est plus rapide !\n" 
                 << ennemi->GetNom() << " " << ennemi->GetAction(ennemi->GetRace()) <<" et inflige "
                 << ennemi->GetForce() << " points de degats !\n ";
+                joueur->MAJPV(-ennemi->GetForce());
                 if (!joueur->estVivant())
                 {
                     std::cout << "Vous êtes mort ! Fin du jeu.";
@@ -165,7 +167,8 @@ void Plateau::lancerCombat(Personnage* joueur, Ennemi* ennemi)
                     // Récompense en argent
                     int gain = ennemi->GetArgent();
                     std::cout << "Vous récupérez " << gain << " pièces !\n"; 
-                    joueur->ajouterArgent(gain);
+                    joueur->MAJArgent(gain);
+                    if (ennemi->GetRace()==Ennemi::Race::r417) r417M=true;
                 }
                 }
             }
@@ -182,17 +185,21 @@ void Plateau::lancerCombat(Personnage* joueur, Ennemi* ennemi)
                     int gain = ennemi->GetArgent();
                     std::cout << "Vous récupérez " << gain << " pièces !\n";
                     joueur->ajouterArgent(gain);
+                    if (ennemi->GetRace()==Ennemi::Race::r417) r417M=true;
                 }
-
-                // Contre-attaque de l'ennemi
-                std::cout << ennemi->GetNom() << " " << ennemi->GetAction(ennemi->GetRace()) << " et inflige "
-                        << ennemi->GetForce() << " points de degats !\n";
-                joueur->MAJPV(-ennemi->GetForce());
-                if (!joueur->estVivant())
+                else
                 {
-                    std::cout << "Vous êtes mort ! Fin du jeu.";
-                    exit(0);
+                    // Contre-attaque de l'ennemi
+                    std::cout << ennemi->GetNom() << " " << ennemi->GetAction(ennemi->GetRace()) << " et inflige "
+                        << ennemi->GetForce() << " points de degats !\n";
+                    joueur->MAJPV(-ennemi->GetForce());
+                    if (!joueur->estVivant())
+                    {
+                      std::cout << "Vous êtes mort ! Fin du jeu.";
+                       exit(0);
+                    }
                 }
+                
             }
             cout << "Vos PV : " << joueur->GetPV();
             cout << "\nPV de l'ennemi : " << ennemi->GetPV() <<"\n";
@@ -289,25 +296,30 @@ void Plateau::lancerFinDuJeu(Personnage* p)
             // Supprimer les ennemis
             if (plateau[y][x].ennemi != nullptr)
             {
-                delete plateau[y][x].ennemi;   // seulement si Plateau est propriétaire
                 plateau[y][x].ennemi = nullptr;
             }
 
             // Supprimer le marchands
             if (plateau[y][x].marchand != nullptr)
             {
-                delete plateau[y][x].marchand;
                 plateau[y][x].marchand = nullptr;
+            }
+            // Supprimer les objets
+            if (plateau[y][x].objet != nullptr)
+            {
+                plateau[y][x].objet = nullptr;
             }
         }
     }
-
-    // Replacer le joueur au centre
-    int cx = LARGEUR / 2;
-    int cy = HAUTEUR / 2;
-
-    placerPersonnage(p, cx, cy);
-    std::cout <<"Bienvenue chez moi";
+    std::cout <<"Bienvenue chez moi\nVous reconaissez cette voix, c'est Rick C-417, Le plus rick de tous les rick...";
+    std::string nom_rick = "Rick C-417";
+    Ennemi* rick = new Ennemi(nom_rick,Ennemi::Race::r417,0,0);
+    placerEnnemi(rick,3,3);
+    
 }
 
+bool Plateau::Getr417M() const
+{
+    return r417M;
+}
 

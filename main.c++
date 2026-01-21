@@ -37,8 +37,8 @@ int main()
 
     // Création des objets
     vector<Objet> objets = {
-        Objet("Seringue de dopamine", TypeObjet::Seringue_de_steroid, 15),
-        Objet("Robot Chirurgien", TypeObjet::Robot_Chirurgien, 20)
+        Objet("Seringue de dopamine", TypeObjet::Seringue_de_steroid, 15,0),
+        Objet("Robot Chirurgien", TypeObjet::Robot_Chirurgien, 20,0)
     };
 
     // Placement aléatoire des objets
@@ -54,6 +54,7 @@ int main()
     // Création et placement de 5 ennemis aléatoires
     vector<Ennemi> ennemis;
     const int N_ENNEMIS = 5;
+    ennemis.reserve(N_ENNEMIS);
     for (int i = 0; i < N_ENNEMIS; ++i) {
         // Choix aléatoire de la race
         Ennemi::Race r = static_cast<Ennemi::Race>(randomInt(0, 5)); // 0 à 5 = toutes les races
@@ -97,8 +98,10 @@ int main()
                 cin >> choix;
                 bool fin = (joueur.GetInventaire()[choix]->GetType()== TypeObjet::PortalGun );
                 joueur.utiliserObjet(choix);
-                if (fin) plateau.lancerFinDuJeu(&joueur);
-                
+                if (fin) 
+                {
+                    plateau.lancerFinDuJeu(&joueur);
+                }
                 
             }
             continue;
@@ -110,8 +113,15 @@ int main()
         else if (commande == "q") dx = -1;
         else if (commande == "d") dx = 1;
 
-        if (!plateau.deplacerPersonnage(&joueur, dx, dy))
-            cout << "Deplacement impossible !" << endl;
+        if (!plateau.deplacerPersonnage(&joueur, dx, dy)) cout << "Deplacement impossible !" << endl;
+
+        if (plateau.Getr417M())
+        {
+            cout <<"\n\n\n\n\nRick C-417 s'effondre, et meurt dans d'atroces souffrances, qu'il a bien merite.\nLa paix revient dans le royaume et blablabla bravo";
+            exit(0);
+        }
+        
+
     }
 
     cout << "Fin du jeu." << endl;

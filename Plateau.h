@@ -26,6 +26,7 @@ class Plateau
 {
 private:
     Case plateau[HAUTEUR][LARGEUR];
+    bool r417M;
 
 public:
     Plateau();
@@ -40,6 +41,7 @@ public:
     void lancerCombat(Personnage* joueur, Ennemi* ennemi);
     void lancerInteractionMarchand(Personnage* p, Marchand* m);
     void lancerFinDuJeu(Personnage* p);
+    bool Getr417M() const;
 
     Case* getCase(int x, int y) { return &plateau[y][x]; }
 };

@@ -9,7 +9,7 @@
 class Ennemi : public Entite
 {
 public:
-    enum class Race { snake, alien, humanoid, robot, dragon, insect };
+    enum class Race { snake, alien, humanoid, robot, dragon, insect,r417 };
 
     struct Stats {
         int pv;

@@ -70,7 +70,7 @@ std::string Ennemi::GetAction(Race race) const
         case Race::dragon: return "Crache du feu de manière nonchalente";
         case Race::humanoid: return "Met une claque de toute ses forces en gémissant";
         case Race::insect: return "Se faufile dans tes vêtements et te chatouille fortement";
-        case Race::robot: return "émet un flash aveuglant et t'assène un coup de tête dévastateur";
+        case Race::robot: return "émet un flash aveuglant";
         case Race::snake: return "te mords sans surprise";
         default: return "Action inconnue";
     }
@@ -87,6 +87,7 @@ Ennemi::Stats Ennemi::StatsRace(Race race)
         case Race::insect: return {5,20,40,randomInt(10,50)};
         case Race::robot: return {40,45,20,randomInt(150,500)};
         case Race::snake: return {10,40,40,randomInt(10,70)};
+        case Race::r417: return {50,50,50,0};
         default: return {0,0,0,0};
     }
 }
@@ -123,6 +124,7 @@ std::string Ennemi::RaceToString(Race r)
         case Race::insect:return "Insecte";
         case Race::robot:return "Robot";
         case Race::snake:return "Serpent";
+        case Race::r417:return "rick particulierement rick";
         default:return "Inconnu";
     }
 }

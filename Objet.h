@@ -21,15 +21,17 @@ private:
     std::string nom;
     TypeObjet type;
     int valeur; // pour soin, force, bouclier ou argent
+    int prix;
 
 public:
     // Constructeur
-    Objet(std::string n, TypeObjet t, int v);
+    Objet(std::string n, TypeObjet t, int v, int p);
 
     // Accesseurs
     std::string GetNom() const;
     TypeObjet GetType() const;
     int GetValeur() const;
+    int GetPrix() const;
 
     // Méthodes
     void utiliser(Personnage& joueur); // On pourra redéfinir plus tard selon le type 

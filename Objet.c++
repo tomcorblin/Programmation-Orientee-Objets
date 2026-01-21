@@ -3,8 +3,8 @@
 #include "Personnage.h"
 
 // Constructeur
-Objet::Objet(std::string n, TypeObjet t, int v)
-    : nom(n), type(t), valeur(v)
+Objet::Objet(std::string n, TypeObjet t, int v, int p)
+    : nom(n), type(t), valeur(v), prix(p)
 {
 }
 
@@ -12,6 +12,7 @@ Objet::Objet(std::string n, TypeObjet t, int v)
 std::string Objet::GetNom() const { return nom; }
 TypeObjet Objet::GetType() const { return type; }
 int Objet::GetValeur() const { return valeur; }
+int Objet::GetPrix() const {return prix;}
 
 // Méthode utiliser (placeholder, effet réel à implémenter dans le jeu)
 void Objet::utiliser(Personnage& joueur)
