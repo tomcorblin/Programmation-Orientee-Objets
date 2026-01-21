@@ -47,7 +47,7 @@ int randomInt(int min, int max) {
     return dist(gen);
 }
 
-// Constructeur
+// Constructeur avec coordonnées
 Ennemi::Ennemi(std::string n, Race r, int px, int py)
     : Entite(n, 0, px, py, 0, 0, 0), race(r)
 {
@@ -66,7 +66,7 @@ std::string Ennemi::GetAction(Race race) const
 {
     switch (race)
     {
-        case Race::alien: return "Vomit un liquide verdâtre acide en gesticulant";
+        case Race::alien: return "Vomit un liquide verdatre acide en gesticulant";
         case Race::dragon: return "Crache du feu de manière nonchalente";
         case Race::humanoid: return "Met une claque de toute ses forces en gémissant";
         case Race::insect: return "Se faufile dans tes vêtements et te chatouille fortement";
@@ -110,5 +110,20 @@ std::string Ennemi::NomRace(Race r)
         return (*noms)[randomInt(0, noms->size() - 1)];
 
     return "Ennemi inconnu";
+}
+
+//Afficheur race
+std::string Ennemi::RaceToString(Race r)
+{
+    switch(r)
+    {
+        case Race::alien:return "Alien";
+        case Race::dragon:return "Dragon";
+        case Race::humanoid:return "Humanoide";
+        case Race::insect:return "Insecte";
+        case Race::robot:return "Robot";
+        case Race::snake:return "Serpent";
+        default:return "Inconnu";
+    }
 }
 

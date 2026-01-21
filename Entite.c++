@@ -41,6 +41,7 @@ int Entite::GetPositionX() const { return positionX; }
 int Entite::GetPositionY() const { return positionY; }
 int Entite::GetPV() const { return points_vie; }
 int Entite::GetForce() const { return force; }
+int Entite::GetRapidite() const {return rapidite;}
 void Entite::setPosition(int x, int y)
 {
     anciennePositionX = positionX;

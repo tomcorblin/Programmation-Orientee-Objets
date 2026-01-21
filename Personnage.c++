@@ -107,12 +107,16 @@ void Personnage::utiliserObjet(int index)
     inventaire[index]->utiliser(*this);
 
     // Optionnel : supprimer l’objet après usage
-    inventaire.erase(inventaire.begin() + index);
+    if (inventaire[index]->GetType()!=TypeObjet::PortalGun) inventaire.erase(inventaire.begin() + index);
 }
 
 void Personnage::augmenterForce(int f)
 {
 	force += f;
+}
+void Personnage::augmenterRapidite(int r)
+{
+	rapidite += r;
 }
 void Personnage::ajouterArgent(int a)
 {
@@ -120,4 +124,48 @@ void Personnage::ajouterArgent(int a)
 }
 
 
+// Fonction pour choisir une classe
+ClassePersonnage Personnage::choisirClasse()
+{
+    int choix = -1;
+    char confirmation = 'n';
 
+    while (confirmation != 'o')
+    {
+        cout << "Choisissez votre personnage :" << endl;
+        cout << "1 - Rick\n2 - Morty\n3 - Summer\n4 - Beth\n5 - Jerry\n6 - Mr Boite a Caca\n";
+        cout << "Votre choix : ";
+        cin >> choix;
+
+        ClassePersonnage classe;
+        switch (choix)
+        {
+        case 1: classe = ClassePersonnage::Rick; break;
+        case 2: classe = ClassePersonnage::Morty; break;
+        case 3: classe = ClassePersonnage::Summer; break;
+        case 4: classe = ClassePersonnage::Beth; break;
+        case 5: classe = ClassePersonnage::Jerry; break;
+        case 6: classe = ClassePersonnage::MrBoiteACaca; break;
+        default: continue;
+        }
+
+        Personnage temp("Aperçu", classe, 0, 0);
+        cout << "\nStatistiques du personnage :" << endl;
+        temp.afficher();
+
+        cout << "\nConfirmer ce choix ? (o/n) : ";
+        cin >> confirmation;
+        cout << endl;
+    }
+
+    switch (choix)
+    {
+    case 1: return ClassePersonnage::Rick;
+    case 2: return ClassePersonnage::Morty;
+    case 3: return ClassePersonnage::Summer;
+    case 4: return ClassePersonnage::Beth;
+    case 5: return ClassePersonnage::Jerry;
+    case 6: return ClassePersonnage::MrBoiteACaca;
+    default: return ClassePersonnage::Morty;
+    }
+}

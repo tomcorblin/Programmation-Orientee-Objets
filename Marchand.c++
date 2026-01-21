@@ -5,13 +5,13 @@
 using namespace std;
 
 Marchand::Marchand(const std::string& n, int x, int y)
-    : nom(n), posX(x), posY(y)
+    : Entite(n,0, x, y,0,0,0)
 {
     // Stock fixe du marchand
-    stock.push_back(Objet("Potion", TypeObjet::Potion, 20));
-    stock.push_back(Objet("Potion", TypeObjet::Potion, 20));
-    stock.push_back(Objet("Seringue de dopamine", TypeObjet::Seringue_de_dopamine, 15));
-    stock.push_back(Objet("Seringue de dopamine", TypeObjet::Seringue_de_dopamine, 15));
+    stock.push_back(Objet("Robot Chirurgien", TypeObjet::Robot_Chirurgien, 20));
+    stock.push_back(Objet("Robot Chirurgien", TypeObjet::Robot_Chirurgien, 20));
+    stock.push_back(Objet("Seringue de steroids", TypeObjet::Seringue_de_steroid, 15));
+    stock.push_back(Objet("Les chaussures qui courent vite", TypeObjet::Chaussures_qui_courent_vite, 40));
     stock.push_back(Objet("PortalGun", TypeObjet::PortalGun, 0));
 }
 

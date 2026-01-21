@@ -117,7 +117,7 @@ bool Plateau::placerEnnemi(Ennemi* e, int x, int y) {
 
 void Plateau::lancerCombat(Personnage* joueur, Ennemi* ennemi)
 {
-    std::cout << "Combat engagé avec " << ennemi->GetNom()
+    std::cout << "Combat engagé avec " << ennemi->GetNom() << " un " << ennemi->RaceToString(ennemi->GetRace())
               << " (PV: " << ennemi->GetPV() << ") !" << std::endl;
 
     std::string choix;
@@ -143,31 +143,59 @@ void Plateau::lancerCombat(Personnage* joueur, Ennemi* ennemi)
         }
         else if (choix == "a") // Attaque
         {
-            std::cout << joueur->GetNom() << " attaque " << ennemi->GetNom()
-                      << " et inflige " << joueur->GetForce() << " points de dégât !" << std::endl;
-            ennemi->MAJPV(-joueur->GetForce());
-
-            if (!ennemi->estVivant())
+            if (joueur->GetRapidite()<ennemi->GetRapidite())
             {
-                std::cout << ennemi->GetNom() << " est vaincu !" << std::endl;
-                // Récompense en argent
-                int gain = ennemi->GetArgent();
-                std::cout << "Vous récupérez " << gain << " pièces !" << std::endl;
-                joueur->ajouterArgent(gain);
-                break;
+                std::cout << ennemi->GetNom() << " est plus rapide !\n" 
+                << ennemi->GetNom() << " " << ennemi->GetAction(ennemi->GetRace()) <<" et inflige "
+                << ennemi->GetForce() << " points de degats !\n ";
+                if (!joueur->estVivant())
+                {
+                    std::cout << "Vous êtes mort ! Fin du jeu.";
+                    exit(0);
+                }
+                else
+                {
+                    std::cout << joueur->GetNom() << " attaque " << ennemi->GetNom()
+                      << " et inflige " << joueur->GetForce() << " points de dégât !\n"; 
+                    ennemi->MAJPV(-joueur->GetForce());
+                
+                if (!ennemi->estVivant())
+                {
+                    std::cout << ennemi->GetNom() << " est vaincu !\n"; 
+                    // Récompense en argent
+                    int gain = ennemi->GetArgent();
+                    std::cout << "Vous récupérez " << gain << " pièces !\n"; 
+                    joueur->ajouterArgent(gain);
+                }
+                }
             }
-
-            // Contre-attaque de l'ennemi
-            std::cout << ennemi->GetNom() << " attaque en retour et inflige "
-                      << ennemi->GetForce() << " points de dégâts !" << std::endl;
-            joueur->MAJPV(-ennemi->GetForce());
-            if (!joueur->estVivant())
+            else
             {
-                std::cout << "Vous êtes mort ! Fin du jeu." << std::endl;
-                exit(0);
+                std::cout << joueur->GetNom() << " attaque " << ennemi->GetNom()
+                      << " et inflige " << joueur->GetForce() << " points de dégât !\n";
+                ennemi->MAJPV(-joueur->GetForce());
+            
+                if (!ennemi->estVivant())
+                {
+                    std::cout << ennemi->GetNom() << " est vaincu !\n";
+                    // Récompense en argent
+                    int gain = ennemi->GetArgent();
+                    std::cout << "Vous récupérez " << gain << " pièces !\n";
+                    joueur->ajouterArgent(gain);
+                }
+
+                // Contre-attaque de l'ennemi
+                std::cout << ennemi->GetNom() << " " << ennemi->GetAction(ennemi->GetRace()) << " et inflige "
+                        << ennemi->GetForce() << " points de degats !\n";
+                joueur->MAJPV(-ennemi->GetForce());
+                if (!joueur->estVivant())
+                {
+                    std::cout << "Vous êtes mort ! Fin du jeu.";
+                    exit(0);
+                }
             }
-            cout << "Vos PV : " << joueur->GetPV()<< endl;
-            cout << "PV de l'ennemi : " << ennemi->GetPV()<< endl;
+            cout << "Vos PV : " << joueur->GetPV();
+            cout << "\nPV de l'ennemi : " << ennemi->GetPV() <<"\n";
         }
         else if (choix == "f") // Fuir
         {
@@ -211,21 +239,75 @@ void Plateau::lancerInteractionMarchand(Personnage* p, Marchand* m)
 
     while (enInteraction)
     {
-        std::cout << "\nVous êtes face au marchand !" << std::endl;
+        std::cout << "\nUn homme dans un tas de babioles se trouve face à vous" << std::endl;
         m->parler();
-        std::cout << "Choisissez un objet à acheter (-1 pour partir) : ";
         int choix;
         std::cin >> choix;
+        
+        switch (choix)
+        {
+            case -1:
+                enInteraction = false;
+                std::cout << "Vous quittez le marchand.\n";
+            break;
 
-        if (choix == -1)
-        {
-            enInteraction = false;
-            std::cout << "Vous quittez le marchand.\n";
-        }
-        else
-        {
-            m->vendreObjet(choix, *p);
+            case 0:
+                std::cout <<"Cette potion sert a INSERER FCT\n";
+                m->vendreObjet(choix,*p);
+                break;
+            case 1:
+                std::cout <<"Cette potion sert a INSERER FCT\n";
+                m->vendreObjet(choix,*p);
+                break;
+            case 2:
+                std::cout <<"Pas sur que l'aiguille soit sterile par contre\n";
+                m->vendreObjet(choix,*p);
+                break;
+            case 3:
+                std::cout <<"Un coup de seringue dans la cuisse et c'est reparti !\n";
+                m->vendreObjet(choix,*p);
+                break;
+            case 4:
+                std::cout <<"J'espere que vous etes pret...\n";
+                m->vendreObjet(choix,*p);
+                break;
+            case 1710 : //sert a tester achat
+                p->ajouterArgent(10000);
+            default :
+                std::cout << "J'ai pas compris, quoi ?";
+                break;
         }
     }
 }
+
+void Plateau::lancerFinDuJeu(Personnage* p)
+{
+    for (int y = 0; y < HAUTEUR; ++y)
+    {
+        for (int x = 0; x < LARGEUR; ++x)
+        {
+            // Supprimer les ennemis
+            if (plateau[y][x].ennemi != nullptr)
+            {
+                delete plateau[y][x].ennemi;   // seulement si Plateau est propriétaire
+                plateau[y][x].ennemi = nullptr;
+            }
+
+            // Supprimer le marchands
+            if (plateau[y][x].marchand != nullptr)
+            {
+                delete plateau[y][x].marchand;
+                plateau[y][x].marchand = nullptr;
+            }
+        }
+    }
+
+    // Replacer le joueur au centre
+    int cx = LARGEUR / 2;
+    int cy = HAUTEUR / 2;
+
+    placerPersonnage(p, cx, cy);
+    std::cout <<"Bienvenue chez moi";
+}
+
 

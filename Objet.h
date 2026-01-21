@@ -8,10 +8,11 @@ class Personnage;
 
 enum class TypeObjet
 {
-    Seringue_de_dopamine,       // augmente la force
-    Potion,      // Potion de soin
+    Seringue_de_steroid,       // augmente la force
+    Chaussures_qui_courent_vite,
+    Robot_Chirurgien,      // Potion de soin
     Argent,      // Argent à récupérer
-    PortalGun
+    PortalGun // Pour fin du jeu
 };
 
 class Objet
@@ -31,7 +32,8 @@ public:
     int GetValeur() const;
 
     // Méthodes
-    void utiliser(Personnage& joueur); // On pourra redéfinir plus tard selon le type
+    void utiliser(Personnage& joueur); // On pourra redéfinir plus tard selon le type 
+
 };
 
 #endif

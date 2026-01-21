@@ -33,6 +33,7 @@ public:
     // Méthodes
     static Stats StatsRace(Race race);
     static std::string NomRace(Race race);
+    static std::string RaceToString(Race race);
 
     // Noms par race
     static const std::vector<std::string> nomsAlien;

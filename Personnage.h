@@ -40,7 +40,10 @@ public:
     void afficherInventaire() const;
     void utiliserObjet(int index);
     void augmenterForce(int f);
+    void augmenterRapidite(int r);
     void ajouterArgent(int a);
+    static ClassePersonnage choisirClasse();
+
 
 };
 

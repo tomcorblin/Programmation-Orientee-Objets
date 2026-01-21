@@ -6,13 +6,11 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include "Entite.h"
 
-class Marchand
+class Marchand : public Entite
 {
 private:
-    std::string nom;
-    int posX;
-    int posY;
     std::vector<Objet> stock;
 
 public:
@@ -25,8 +23,8 @@ public:
     //Accesseurs
     const std::vector<Objet>& getStock() const { return stock; }
     const std::string& getNom() const { return nom; }
-    int getX() const { return posX; }
-    int getY() const { return posY; }
+    int getX() const { return positionX; }
+    int getY() const { return positionY; }
 };
 
 #endif

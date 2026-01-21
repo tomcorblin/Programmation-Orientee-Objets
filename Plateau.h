@@ -39,6 +39,7 @@ public:
     bool placerMarchand(Marchand* m, int x, int y);
     void lancerCombat(Personnage* joueur, Ennemi* ennemi);
     void lancerInteractionMarchand(Personnage* p, Marchand* m);
+    void lancerFinDuJeu(Personnage* p);
 
     Case* getCase(int x, int y) { return &plateau[y][x]; }
 };

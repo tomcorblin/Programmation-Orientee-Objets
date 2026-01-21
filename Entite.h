@@ -35,6 +35,7 @@ public:
     int GetPositionY() const;
     int GetPV() const;
     int GetForce() const;
+    int GetRapidite() const;
     void setPosition(int x, int y);
     void revenirCasePrecedente();
 };

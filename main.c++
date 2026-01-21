@@ -9,51 +9,7 @@
 
 using namespace std;
 
-// Fonction pour choisir une classe
-ClassePersonnage choisirClasse()
-{
-    int choix = -1;
-    char confirmation = 'n';
 
-    while (confirmation != 'o')
-    {
-        cout << "Choisissez votre personnage :" << endl;
-        cout << "1 - Rick\n2 - Morty\n3 - Summer\n4 - Beth\n5 - Jerry\n6 - Mr Boite a Caca\n";
-        cout << "Votre choix : ";
-        cin >> choix;
-
-        ClassePersonnage classe;
-        switch (choix)
-        {
-        case 1: classe = ClassePersonnage::Rick; break;
-        case 2: classe = ClassePersonnage::Morty; break;
-        case 3: classe = ClassePersonnage::Summer; break;
-        case 4: classe = ClassePersonnage::Beth; break;
-        case 5: classe = ClassePersonnage::Jerry; break;
-        case 6: classe = ClassePersonnage::MrBoiteACaca; break;
-        default: continue;
-        }
-
-        Personnage temp("Aperçu", classe, 0, 0);
-        cout << "\nStatistiques du personnage :" << endl;
-        temp.afficher();
-
-        cout << "\nConfirmer ce choix ? (o/n) : ";
-        cin >> confirmation;
-        cout << endl;
-    }
-
-    switch (choix)
-    {
-    case 1: return ClassePersonnage::Rick;
-    case 2: return ClassePersonnage::Morty;
-    case 3: return ClassePersonnage::Summer;
-    case 4: return ClassePersonnage::Beth;
-    case 5: return ClassePersonnage::Jerry;
-    case 6: return ClassePersonnage::MrBoiteACaca;
-    default: return ClassePersonnage::Morty;
-    }
-}
 
 // Générer une race aléatoire
 Ennemi::Race randomRace()
@@ -66,11 +22,11 @@ int main()
 {
     srand(static_cast<unsigned int>(time(nullptr)));
 
-    // 1️⃣ Création du plateau
+    // Création du plateau
     Plateau plateau;
 
-    // 2️⃣ Choix du joueur
-    ClassePersonnage classeChoisie = choisirClasse();
+    // Choix du joueur
+    ClassePersonnage classeChoisie = Personnage::choisirClasse();
     Personnage joueur("Joueur", classeChoisie, 0, 0);
     plateau.placerPersonnage(&joueur, 0, 0);
 
@@ -79,13 +35,13 @@ int main()
     plateau.placerMarchand(&marchand, 5, 5);
 
 
-    // 3️⃣ Création des objets
+    // Création des objets
     vector<Objet> objets = {
-        Objet("Seringue de dopamine", TypeObjet::Seringue_de_dopamine, 15),
-        Objet("Potion", TypeObjet::Potion, 20)
+        Objet("Seringue de dopamine", TypeObjet::Seringue_de_steroid, 15),
+        Objet("Robot Chirurgien", TypeObjet::Robot_Chirurgien, 20)
     };
 
-    // 4️⃣ Placement aléatoire des objets
+    // Placement aléatoire des objets
     for (auto& obj : objets)
     {
         int x, y;
@@ -95,15 +51,15 @@ int main()
         } while (!plateau.placerObjet(&obj, x, y));
     }
 
-    // 5️⃣ Création et placement de 5 ennemis aléatoires
+    // Création et placement de 5 ennemis aléatoires
     vector<Ennemi> ennemis;
     const int N_ENNEMIS = 5;
     for (int i = 0; i < N_ENNEMIS; ++i) {
         // Choix aléatoire de la race
         Ennemi::Race r = static_cast<Ennemi::Race>(randomInt(0, 5)); // 0 à 5 = toutes les races
 
-        // Création de l'ennemi avec nom générique, les stats seront définies dans le constructeur
-        ennemis.emplace_back("Ennemi" + std::to_string(i+1), r, 0, 0);
+        // Création de l'ennemi avec nom aléatoire, les stats seront définies dans le constructeur
+        ennemis.emplace_back(Ennemi::NomRace(r), r, 0, 0);
 
         // Placement aléatoire sur le plateau
         int x, y;
@@ -113,7 +69,7 @@ int main()
         } while (!plateau.placerEnnemi(&ennemis.back(), x, y));
     }
 
-    // 6️⃣ Boucle de jeu
+    // Boucle de jeu
     string commande;
     while (true)
     {
@@ -139,7 +95,11 @@ int main()
                 int choix;
                 cout << "Quel objet utiliser ? ";
                 cin >> choix;
+                bool fin = (joueur.GetInventaire()[choix]->GetType()== TypeObjet::PortalGun );
                 joueur.utiliserObjet(choix);
+                if (fin) plateau.lancerFinDuJeu(&joueur);
+                
+                
             }
             continue;
         }
@@ -152,41 +112,6 @@ int main()
 
         if (!plateau.deplacerPersonnage(&joueur, dx, dy))
             cout << "Deplacement impossible !" << endl;
-
-        //si le joueur est sur la case du marchand
-        Case* caseJoueur = plateau.getCase(joueur.GetPositionX(), joueur.GetPositionY());
-        if (caseJoueur->marchand)
-        {
-            Marchand* m = caseJoueur->marchand;
-            cout << "\nVous rencontrez " << m->getNom() << " !" << endl;
-
-            string cmd;
-            while (true)
-            {
-                cout << "\nOptions : a acheter | x quitter le marchand : ";
-                cin >> cmd;
-
-                if (cmd == "x")
-                {
-                    cout << "Vous quittez le marchand." << endl;
-                    break;
-                }
-                else if (cmd == "a")
-                {
-                    cout << "Stock disponible :" << endl;
-                    for (size_t i = 0; i < m->getStock().size(); ++i)
-                        cout << i << " - " << m->getStock()[i].GetNom() << endl;
-
-                    int choix;
-                    cout << "Quel objet acheter ? ";
-                    cin >> choix;
-
-                    m->vendreObjet(choix, joueur);
-                }
-            }
-
-            continue; // le joueur ne peut rien faire d'autre tant qu'il est sur la case du marchand
-        }
     }
 
     cout << "Fin du jeu." << endl;
